@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Categories - Recipe Haven</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fdf6f0;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            padding: 2rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        a {
+            color: #ff7e5f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            color: #777;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Recipe Tags</h1>
+        <p>Explore tags to help find recipes</p>
+    </header>
+    <main>
+        <ul>
+            {% for tag in object_list %}
+            <li><a href="{% url 'tags:tag-detail' tag.pk %}">{{ tag.name }}</a></li>
+            {% empty %}
+            <li>No tags found.</li>
+            {% endfor %}
+        </ul>
+    </main>
+    <footer>
+        &copy; 2025 Recipe Haven. All rights reserved.
+    </footer>
+</body>
+
+</html>

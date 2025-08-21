@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ object.name }} - Recipe Details</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fffaf5;
+            color: #333;
+        }
+
+        header {
+            background-color: #ff7e5f;
+            background-image: linear-gradient(to right, #ff7e5f, #feb47b);
+            padding: 2rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            color: #ff7e5f;
+        }
+
+        .details p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .ingredients ul {
+            padding-left: 1.2rem;
+        }
+
+        .ingredients li {
+            margin-bottom: 0.5rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.5rem 1rem;
+            background-color: #ff7e5f;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #e96b4d;
+        }
+
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            color: #777;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>{{ object.name }}</h1>
+        <p>Discover all the delicious details</p>
+    </header>
+
+    <div class="container">
+
+        <div class="details">
+            <h2 class="section-title">Recipe Description</h2>
+            <p>{{ object.description }}</p>
+
+            <h2 class="section-title">Preparation</h2>
+            <p><strong>Prep Time:</strong> {{ object.prep_time }} minutes</p>
+            <p><strong>Cook Time:</strong> {{ object.cook_time }} minutes</p>
+            <p><strong>Total Time:</strong> {{ object.prep_time|add:object.cook_time }} minutes</p>
+
+            <h2 class="section-title">Instructions</h2>
+            <p>{{ object.instructions }}</p>
+
+            <h2 class="section-title">Ingredients</h2>
+            <div class="ingredients">
+                <ul>
+                    {% for item in object.recipe_ingredients.all %}
+                    <li>{{ item.quantity }} of {{ item.ingredient.name }}</li>
+                    {% empty %}
+                    <li>No ingredients listed.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <h2 class="section-title">Categories</h2>
+            <p>
+                {% for category in object.categories.all %}
+                {{ category.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                No categories listed.
+                {% endfor %}
+            </p>
+
+            <h2 class="section-title">Tags</h2>
+            <p>
+                {% for tag in object.tags.all %}
+                {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                No tags listed.
+                {% endfor %}
+            </p>
+
+            <h2 class="section-title">Difficulty</h2>
+            <p>
+                <strong>Difficulty:</strong> {{ object.difficulty }}
+            </p>
+        </div>
+
+        <a href="{% url 'recipes:recipe-list' %}" class="back-link">&larr; Back to Recipes List</a>
+    </div>
+
+    <footer>
+        &copy; 2025 Recipe Haven. All rights reserved.
+    </footer>
+
+</body>
+
+</html>
