@@ -18,11 +18,44 @@
             padding: 2rem 0;
             text-align: center;
             color: white;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(255, 126, 95, 0.4);
         }
 
         header h1 {
             margin: 0;
             font-size: 3rem;
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            font-size: 1.2rem;
+        }
+
+        nav {
+            margin-top: 1rem;
+        }
+
+        /* Shared style for nav links and logout button */
+        nav a,
+        nav .nav-link {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            background: #333;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        nav a:hover,
+        nav .nav-link:hover {
+            background: #222;
         }
 
         .content {
@@ -53,6 +86,7 @@
             text-align: center;
             color: #777;
             font-size: 0.9rem;
+            padding-bottom: 1rem;
         }
     </style>
 </head>
@@ -61,17 +95,33 @@
     <header>
         <h1>Welcome to Recipe Haven</h1>
         <p>Your cozy kitchen corner for all things delicious</p>
+        {% if user.is_authenticated %}
+        <p>Welcome back, <strong>{{ user.username }}</strong> 👋</p>
+        <nav>
+            <a href="{% url 'recipes:recipe-list' %}">📖 View Recipes</a>
+            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="nav-link">🚪 Logout</button>
+            </form>
+        </nav>
+        {% else %}
+        <nav>
+            <a href="{% url 'login' %}">🔑 Login</a>
+            <a href="{% url 'recipes:recipe-list' %}">📖 Browse Recipes</a>
+        </nav>
+        {% endif %}
     </header>
 
     <div class="content">
-        <p>Discover new flavors, classic dishes, and share your favorite recipes with our community. Whether you're a
-            seasoned chef or just starting out, Recipe Haven is here to inspire every meal.</p>
+        <p>
+            Discover new flavors, classic dishes, and share your favorite recipes with our community.
+            Whether you're a seasoned chef or just starting out, Recipe Haven is here to inspire every meal.
+        </p>
 
         <div class="image-banner">
             <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1350&q=80"
                 alt="Delicious food on table">
         </div>
-
     </div>
 
     <footer>

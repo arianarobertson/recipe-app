@@ -2,118 +2,140 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>All Recipes - Recipe Haven</title>
     <style>
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #fdf6f0;
+            background: #fffaf6;
             color: #333;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 2rem;
         }
 
         header {
             background-color: #ff7e5f;
             background-image: linear-gradient(to right, #ff7e5f, #feb47b);
-            padding: 2rem 0;
+            padding: 1.5rem 0;
             text-align: center;
             color: white;
-            border-radius: 8px;
-            margin-bottom: 2rem;
+            border-radius: 0 0 8px 8px;
             box-shadow: 0 4px 12px rgba(255, 126, 95, 0.4);
         }
 
         header h1 {
             margin: 0;
-            font-size: 3rem;
-            letter-spacing: 2px;
+            font-size: 2.5rem;
         }
 
-        ul {
-            list-style: none;
-            padding: 0;
+        nav {
+            margin-top: 1rem;
         }
 
-        li {
-            background: white;
-            margin-bottom: 1.5rem;
-            padding: 1.2rem 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s ease;
-        }
-
-        li:hover {
-            box-shadow: 0 6px 15px rgba(255, 126, 95, 0.4);
-        }
-
-        a {
-            text-decoration: none;
-            font-weight: 700;
-            color: #ff7e5f;
-            font-size: 1.5rem;
+        .nav-link {
             display: inline-block;
+            margin: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            background: #333;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            cursor: pointer;
+            border: none;
         }
 
-        a:hover {
-            text-decoration: underline;
+        .nav-link:hover {
+            background: #222;
         }
 
-        .desc {
-            margin-top: 0.5rem;
+        .content {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .recipe-card {
+            display: flex;
+            align-items: center;
+            background: #ffe2d6;
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .recipe-card:hover {
+            transform: scale(1.02);
+        }
+
+        .recipe-card img {
+            width: 120px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-right: 1rem;
+        }
+
+        .recipe-info h2 {
+            margin: 0 0 0.3rem;
+            font-size: 1.4rem;
+        }
+
+        .recipe-info p {
+            margin: 0.2rem 0;
             color: #555;
-            font-size: 1.1rem;
-            line-height: 1.4;
         }
 
-        footer {
-            margin-top: 3rem;
-            text-align: center;
-            color: #777;
-            font-size: 0.9rem;
-            padding-bottom: 1rem;
+        .recipe-info a {
+            color: #ff7e5f;
+            font-weight: bold;
+            text-decoration: none;
         }
 
-        @media (max-width: 600px) {
-            body {
-                padding: 1rem;
-            }
-
-            header h1 {
-                font-size: 2.2rem;
-            }
-
-            a {
-                font-size: 1.2rem;
-            }
+        .recipe-info a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
     <header>
-        <h1>All Recipes</h1>
-        <p>Your cozy kitchen corner for all things delicious</p>
+        <h1>🍲 All Recipes</h1>
+        <nav>
+            {% if user.is_authenticated %}
+            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="nav-link">🚪 Logout</button>
+            </form>
+            {% else %}
+            <a href="{% url 'login' %}" class="nav-link">🔑 Login</a>
+            {% endif %}
+            <a href="{% url 'home' %}" class="nav-link">🏠 Home</a>
+        </nav>
     </header>
 
-    <ul>
+    <div class="content">
         {% for recipe in object_list %}
-        <li>
-            <a href="{{ recipe.get_absolute_url }}">{{ recipe.name }}</a>
-            <p class="desc">{{ recipe.description|truncatechars:120 }}</p>
-        </li>
+        <div class="recipe-card">
+            {% if recipe.image %}
+            <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}">
+            {% endif %}
+            <div class="recipe-info">
+                <h2><a href="{% url 'recipes:recipe-detail' recipe.pk %}">{{ recipe.name }}</a></h2>
+                {% if recipe.description %}
+                <p>{{ recipe.description|truncatewords:20 }}</p>
+                {% endif %}
+                {% if recipe.author %}
+                <p><em>By {{ recipe.author }}</em></p>
+                {% endif %}
+            </div>
+        </div>
         {% empty %}
-        <li>No recipes available yet.</li>
+        <p>No recipes available.</p>
         {% endfor %}
-    </ul>
-
-    <footer>
-        &copy; 2025 Recipe Haven. All rights reserved.
-    </footer>
+    </div>
 </body>
 
 </html>
