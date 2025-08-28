@@ -36,7 +36,6 @@
             margin-top: 1rem;
         }
 
-        /* Shared style for nav links and logout button */
         nav a,
         nav .nav-link {
             display: inline-block;
@@ -95,10 +94,12 @@
     <header>
         <h1>Welcome to Recipe Haven</h1>
         <p>Your cozy kitchen corner for all things delicious</p>
+
         {% if user.is_authenticated %}
         <p>Welcome back, <strong>{{ user.username }}</strong> 👋</p>
         <nav>
             <a href="{% url 'recipes:recipe-list' %}">📖 View Recipes</a>
+            <a href="{% url 'recipes:search-recipes' %}">🔍 Search Recipes</a>
             <form method="post" action="{% url 'logout' %}" style="display:inline;">
                 {% csrf_token %}
                 <button type="submit" class="nav-link">🚪 Logout</button>

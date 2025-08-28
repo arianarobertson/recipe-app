@@ -109,6 +109,7 @@
                 {% csrf_token %}
                 <button type="submit" class="nav-link">🚪 Logout</button>
             </form>
+            <a href="{% url 'recipes:search-recipes' %}" class="nav-link">🔍 Search Recipes</a>
             {% else %}
             <a href="{% url 'login' %}" class="nav-link">🔑 Login</a>
             {% endif %}
