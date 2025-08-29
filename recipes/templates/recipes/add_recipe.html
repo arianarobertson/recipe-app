@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Recipe - Recipe Haven</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fffaf6;
+            color: #333;
+            padding: 2rem;
+            max-width: 850px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            background-color: #ff7e5f;
+            background-image: linear-gradient(to right, #ff7e5f, #feb47b);
+            padding: 2rem 0;
+            color: white;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(255, 126, 95, 0.4);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        nav {
+            margin-top: 1rem;
+        }
+
+        nav a {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            background: #333;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            background: #222;
+        }
+
+        .content {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        /* Styling for the Ingredients checkboxes */
+        .ingredients-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            /* Add space between checkboxes */
+            margin-bottom: 1.5rem;
+            justify-content: flex-start;
+        }
+
+        .ingredient-item {
+            display: inline-flex;
+            align-items: center;
+            /* Ensure the checkbox and label are vertically aligned */
+            gap: 8px;
+            /* Space between checkbox and label */
+            margin-bottom: 0.8rem;
+            /* Spacing between each ingredient */
+        }
+
+        .ingredient-checkbox {
+            width: 18px;
+            /* Adjust checkbox size if needed */
+            height: 18px;
+            margin: 0;
+            /* Remove any default margin */
+        }
+
+        .ingredient-label {
+            font-size: 1rem;
+            /* Ensure the label font matches */
+            margin: 0;
+            cursor: pointer;
+            line-height: 1.5;
+            /* Ensure vertical alignment with checkbox */
+        }
+
+        /* Styling the form */
+        form {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        form label {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        form input,
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1.2rem;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        form button {
+            background: #ff7e5f;
+            color: white;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        form button:hover {
+            background: #feb47b;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #ff7e5f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Add a New Recipe</h1>
+        <p>Fill out the form below to add a new recipe to Recipe Haven!</p>
+        <nav>
+            <a href="{% url 'recipes:recipe-list' %}">📖 View Recipes</a>
+            <a href="{% url 'recipes:search-recipes' %}">🔍 Search Recipes</a>
+            <a href="{% url 'recipes:add-recipe' %}">➕ Add Recipe</a>
+            <a href="{% url 'recipes:hearted-recipes' %}">💖 Your Hearted Recipes</a>
+            <a href="{% url 'home' %}" class="nav-link">🏠 Home</a>
+        </nav>
+    </header>
+
+    <div class="content">
+        <h2>Recipe Form</h2>
+
+        <!-- Recipe Form Here -->
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Recipe</button>
+        </form>
+
+        <a href="{% url 'recipes:recipe-list' %}" class="back-link">&larr; Back to all recipes</a>
+    </div>
+
+    <footer>
+        &copy; 2025 Recipe Haven. All rights reserved.
+    </footer>
+</body>
+
+</html>

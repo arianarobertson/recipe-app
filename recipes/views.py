@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from .models import Recipe, Category, Tag
 from .forms import RecipeSearchForm
+from .forms import RecipeForm
 from .utils import get_chart
 
 
@@ -70,3 +71,40 @@ def search_recipes(request):
         'chart': chart
     }
     return render(request, 'recipes/search.html', context)
+
+def add_recipe(request):
+    if request.method == 'POST':
+        form = RecipeForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('recipes:recipe-list')
+    else:
+        form = RecipeForm()
+
+    return render(request, 'recipes/add_recipe.html', {'form': form})
+
+def about_me(request):
+    return render(request, 'recipes/about_me.html')
+
+def love_recipe(request, pk):
+    recipe = get_object_or_404(Recipe, pk=pk)
+    
+    if request.user.is_authenticated:
+        if recipe in request.user.loved_recipes.all():
+            # User has already loved this recipe, so we "unlove" it
+            request.user.loved_recipes.remove(recipe)
+        else:
+            # User loves this recipe
+            request.user.loved_recipes.add(recipe)
+        return redirect('recipes:recipe-detail', pk=recipe.pk)
+    else:
+        return redirect('login')  # Redirect to login if user is not authenticated
+    
+def hearted_recipes(request):
+    if request.user.is_authenticated:
+        hearted_recipes = request.user.loved_recipes.all()
+        return render(request, 'recipes/hearted_recipes.html', {'hearted_recipes': hearted_recipes})
+    else:
+        return redirect('login')  # Redirect to login if user is not authenticated
+
+

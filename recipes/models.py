@@ -3,6 +3,7 @@ from django.urls import reverse
 from ingredients.models import Ingredient
 from categories.models import Category
 from tags.models import Tag
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -16,6 +17,8 @@ class Recipe(models.Model):
     image = models.ImageField(upload_to='recipes', default='no_image.jpg')  # <-- NEW
     categories = models.ManyToManyField(Category, through='RecipeCategory')
     tags = models.ManyToManyField(Tag, blank=True)
+    # Relationship to track "loved" recipes
+    loved_by = models.ManyToManyField(User, related_name='loved_recipes', blank=True)
 
     def __str__(self):
         return self.name

@@ -14,13 +14,54 @@
         }
 
         header {
+            background-color: #ff7e5f;
+            background-image: linear-gradient(to right, #ff7e5f, #feb47b);
+            padding: 2rem 0;
             text-align: center;
-            margin-bottom: 2rem;
+            color: white;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(255, 126, 95, 0.4);
         }
 
         header h1 {
-            color: #ff7e5f;
-            font-size: 2.5rem;
+            margin: 0;
+            font-size: 3rem;
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            font-size: 1.2rem;
+        }
+
+        nav {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        nav a,
+        nav .nav-link {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            background: #333;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        nav a:hover,
+        nav .nav-link:hover {
+            background: #222;
+        }
+
+        nav .active {
+            background: #ff7e5f;
+            /* Highlight active page */
         }
 
         form {
@@ -87,44 +128,72 @@
 <body>
     <header>
         <h1>Search Recipes</h1>
+        <p>Here you can search for delicious recipes</p>
+
+        {% if user.is_authenticated %}
+        <nav>
+            <a href="{% url 'recipes:recipe-list' %}"
+                class="nav-link {% if request.path == '/recipes/list/' %}active{% endif %}">📖 View Recipes</a>
+            <a href="{% url 'recipes:add-recipe' %}"
+                class="nav-link {% if request.path == '/recipes/add/' %}active{% endif %}">➕ Add Recipe</a>
+            <a href="{% url 'recipes:hearted-recipes' %}"
+                class="nav-link {% if request.path == '/recipes/hearted/' %}active{% endif %}">💖 Your Hearted
+                Recipes</a>
+            <a href="{% url 'recipes:about-me' %}"
+                class="nav-link {% if request.path == '/recipes/about/' %}active{% endif %}">ℹ️ About Me</a>
+        </nav>
+        {% else %}
+        <nav>
+            <a href="{% url 'login' %}">🔑 Login</a>
+            <a href="{% url 'recipes:recipe-list' %}">📖 Browse Recipes</a>
+        </nav>
+        {% endif %}
     </header>
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Search</button>
-    </form>
+    <div class="content">
+        <h2></h2>
 
-    {% if recipes.exists %}
-    <h2>Results</h2>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Created At</th>
-        </tr>
-        {% for recipe in recipes %}
-        <tr>
-            <td><a href="{{ recipe.get_absolute_url }}">{{ recipe.name }}</a></td>
-            <td>
-                {% for cat in recipe.categories.all %}
-                {{ cat.name }}{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            </td>
-            <td>{{ recipe.created_at|date:"M d, Y" }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Search</button>
+        </form>
 
-    {% if chart %}
-    <img src="data:image/png;base64, {{ chart|safe }}" alt="Chart" class="chart">
-    {% endif %}
+        {% if recipes.exists %}
+        <h2>Results</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Created At</th>
+            </tr>
+            {% for recipe in recipes %}
+            <tr>
+                <td><a href="{{ recipe.get_absolute_url }}">{{ recipe.name }}</a></td>
+                <td>
+                    {% for cat in recipe.categories.all %}
+                    {{ cat.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ recipe.created_at|date:"M d, Y" }}</td>
+            </tr>
+            {% endfor %}
+        </table>
 
-    {% elif recipes is not None %}
-    <p>No results found.</p>
-    {% endif %}
+        {% if chart %}
+        <img src="data:image/png;base64, {{ chart|safe }}" alt="Chart" class="chart">
+        {% endif %}
 
-    <a href="{% url 'recipes:recipe-list' %}" class="back-link">&larr; Back to All Recipes</a>
+        {% elif recipes is not None %}
+        <p>No results found.</p>
+        {% endif %}
+
+        <a href="{% url 'recipes:recipe-list' %}" class="back-link">&larr; Back to All Recipes</a>
+    </div>
+
+    <footer>
+        &copy; 2025 Recipe Haven. All rights reserved.
+    </footer>
 </body>
 
 </html>

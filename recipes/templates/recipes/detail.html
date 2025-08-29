@@ -118,6 +118,18 @@
 
     <p class="description">{{ object.description }}</p>
 
+    <!-- Love Button -->
+    {% if user.is_authenticated %}
+    <form method="POST" action="{% url 'recipes:love-recipe' pk=recipe.pk %}" style="display:inline;">
+        {% csrf_token %}
+        {% if object in user.loved_recipes.all %}
+        <button type="submit" class="nav-link">💖 Unlove</button>
+        {% else %}
+        <button type="submit" class="nav-link">❤️ Love</button>
+        {% endif %}
+    </form>
+    {% endif %}
+
     <div class="meta">
         <div class="categories">
             <strong>Categories:</strong>

@@ -6,6 +6,7 @@ from ingredients.models import Ingredient
 from recipes.models import Recipe, RecipeIngredient
 from tags.models import Tag
 from .forms import RecipeSearchForm
+from .models import Recipe
 
 # ----------------------------
 # Recipe Model Tests
@@ -66,6 +67,34 @@ class RecipeFormTest(TestCase):
         form = RecipeSearchForm(data=form_data)
         self.assertTrue(form.is_valid())
 
+def test_recipe_form_submission(self):
+    self.user = User.objects.create_user(username='tester', password='testpass')
+    self.client.login(username='tester', password='testpass')
+
+    category = Category.objects.create(name='Test Category')
+    tag = Tag.objects.create(name='Test Tag')
+    ingredient = Ingredient.objects.create(name='Flour', is_allergen=False)
+
+    response = self.client.post('/recipes/add/', {
+        'name': 'Test Recipe',
+        'description': 'Test description',
+        'prep_time': 10,
+        'cook_time': 15,
+        'instructions': 'Test instructions',
+        'categories': [category.id],
+        'tags': [tag.id],
+        'ingredients': [ingredient.id], 
+    })
+
+    if response.status_code != 302:
+        print("\nForm errors:")
+        print(response.context['form'].errors)
+
+    self.assertEqual(response.status_code, 302)  # Expecting redirect after successful submission
+
+
+
+
 # ----------------------------
 # Recipe Views Tests
 # ----------------------------
@@ -84,7 +113,8 @@ class RecipeViewTest(TestCase):
             name="Pancakes",
             description="Delicious pancakes",
             prep_time=10,   # prep time in minutes
-            cook_time=5     # cook time in minutes
+            cook_time=5,    # cook time in minutes
+            instructions="Mix and fry."
         )
         cls.recipe.categories.add(cls.category)
         cls.recipe.tags.add(cls.tag)
@@ -124,3 +154,23 @@ class RecipeViewTest(TestCase):
         self.client.login(username='testuser', password='pass1234')
         response = self.client.post(reverse('recipes:search-recipes'), {'recipe_name': 'Pancakes'})
         self.assertContains(response, "Pancakes")
+
+# ----------------------------
+# Love Recipe Test
+# ----------------------------
+class RecipeTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.recipe = Recipe.objects.create(
+            name="Test Recipe",
+            description="Test Description",
+            prep_time=5,
+            cook_time=10,
+            instructions="Test instructions"
+        )
+
+    def test_love_recipe(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post(reverse('recipes:love-recipe', args=[self.recipe.pk]))
+        self.assertEqual(response.status_code, 302)  # Redirects after loving the recipe
+        self.assertTrue(self.recipe in self.user.loved_recipes.all())

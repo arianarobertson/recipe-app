@@ -100,6 +100,9 @@
         <nav>
             <a href="{% url 'recipes:recipe-list' %}">📖 View Recipes</a>
             <a href="{% url 'recipes:search-recipes' %}">🔍 Search Recipes</a>
+            <a href="{% url 'recipes:add-recipe' %}">➕ Add Recipe</a>
+            <a href="{% url 'recipes:hearted-recipes' %}">💖 Your Hearted Recipes</a>
+            <a href="{% url 'recipes:about-me' %}">ℹ️ About Me</a>
             <form method="post" action="{% url 'logout' %}" style="display:inline;">
                 {% csrf_token %}
                 <button type="submit" class="nav-link">🚪 Logout</button>

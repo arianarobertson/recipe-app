@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>About Me - Recipe Haven</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fffaf6;
+            color: #333;
+            padding: 2rem;
+            max-width: 850px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            background-color: #ff7e5f;
+            background-image: linear-gradient(to right, #ff7e5f, #feb47b);
+            padding: 2rem 0;
+            color: white;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(255, 126, 95, 0.4);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        nav {
+            margin-top: 1rem;
+        }
+
+        nav a {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            background: #333;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            background: #222;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        a.back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #ff7e5f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a.back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>About Me</h1>
+        <p>Your cozy kitchen corner for all things delicious</p>
+        <nav>
+            <a href="{% url 'recipes:recipe-list' %}">📖 View Recipes</a>
+            <a href="{% url 'recipes:search-recipes' %}">🔍 Search Recipes</a>
+            <a href="{% url 'recipes:add-recipe' %}">➕ Add Recipe</a>
+            <a href="{% url 'recipes:hearted-recipes' %}">💖 Your Hearted Recipes</a>
+        </nav>
+    </header>
+
+    <section>
+        <p>
+            Hi, I'm Ariana Robertson, a passionate developer and food lover. Welcome to my Recipe Haven application!
+            Here, I share my favorite recipes and help others discover new cooking ideas. Below you can find links to my
+            GitHub and portfolio website.
+        </p>
+        <h3>Contact Information</h3>
+        <p>Email: arobertson22@berkeley.edu</p>
+        <p>GitHub: <a href="https://github.com/arianarobertson" target="_blank">Your GitHub</a></p>
+        <p>Portfolio: <a href="https://arianarobertson.github.io/portfolio-website/" target="_blank">Your Portfolio</a>
+        </p>
+        <a href="{% url 'home' %}" class="back-link">&larr; Back to Home</a>
+    </section>
+
+    <footer>
+        &copy; 2025 Recipe Haven. All rights reserved.
+    </footer>
+</body>
+
+</html>
