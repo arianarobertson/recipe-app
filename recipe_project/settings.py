@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'ingredients',
     'categories',
     'ratings', 
-    'tags',     
+    'tags', 
+    'cloudinary',
+    'cloudinary_storage',    
 ]
 
 MIDDLEWARE = [
@@ -141,6 +143,15 @@ LOGOUT_REDIRECT_URL = '/'   # After logout, go back to homepage
 # Media files (user uploaded content)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Cloudinary settings (add below media settings)
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Heroku: Update database configuration from $DATABASE_URL.
 import dj_database_url
