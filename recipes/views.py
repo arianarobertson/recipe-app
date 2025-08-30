@@ -6,6 +6,7 @@ from .models import Recipe, Category, Tag
 from .forms import RecipeSearchForm
 from .forms import RecipeForm
 from .utils import get_chart
+import cloudinary.uploader
 
 
 def home(request):
@@ -76,12 +77,25 @@ def add_recipe(request):
     if request.method == 'POST':
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            # Delay saving to DB until we assign image_url
+            recipe = form.save(commit=False)
+
+            image_file = request.FILES.get('image')  # Your form should have this field
+
+            if image_file:
+                upload_result = cloudinary.uploader.upload(image_file)
+                recipe.image_url = upload_result.get('secure_url')  # Save Cloudinary URL
+
+            recipe.save()
+            form.save_m2m()  # Save M2M fields like categories, tags, etc.
+
             return redirect('recipes:recipe-list')
     else:
         form = RecipeForm()
 
     return render(request, 'recipes/add_recipe.html', {'form': form})
+
+
 
 def about_me(request):
     return render(request, 'recipes/about_me.html')

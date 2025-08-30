@@ -19,6 +19,7 @@ class Recipe(models.Model):
     tags = models.ManyToManyField(Tag, blank=True)
     # Relationship to track "loved" recipes
     loved_by = models.ManyToManyField(User, related_name='loved_recipes', blank=True)
+    image_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return self.name

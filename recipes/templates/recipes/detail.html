@@ -110,8 +110,8 @@
         <h1>{{ object.name }}</h1>
     </header>
 
-    {% if object.image %}
-    <img src="{{ object.image.url }}" alt="{{ object.name }}" class="recipe-img">
+    {% if object.image_url %}
+    <img src="{{ object.image_url }}" alt="{{ object.name }}" class="recipe-img">
     {% else %}
     <img src="/static/default-recipe.jpg" alt="No image available" class="recipe-img">
     {% endif %}
