@@ -8,7 +8,6 @@ from recipes import views
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('', views.home, name='home'),
     path('', RedirectView.as_view(url='/recipes/', permanent=False)),  # root → /recipes/
     path('admin/', admin.site.urls),
     path('recipes/', include('recipes.urls')),
