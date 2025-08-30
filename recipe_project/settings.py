@@ -46,8 +46,7 @@ INSTALLED_APPS = [
     'categories',
     'ratings', 
     'tags', 
-    'cloudinary',
-    'cloudinary_storage',    
+    'cloudinary',  
 ]
 
 MIDDLEWARE = [
