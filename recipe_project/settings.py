@@ -135,7 +135,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # AUTH
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'recipes:home'
 LOGOUT_REDIRECT_URL = '/'   # After logout, go back to homepage
 
 # Media files (user uploaded content)
