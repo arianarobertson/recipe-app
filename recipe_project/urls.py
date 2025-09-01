@@ -15,7 +15,6 @@ urlpatterns = [
     path('ingredients/', include('ingredients.urls')),
     path('tags/', include('tags.urls')),
     path('ratings/', include('ratings.urls')),
-    path('recipes/', include('recipes.urls')),  # include your app urls
 
     # 🔑 Auth (login/logout)
     path('login/', auth_views.LoginView.as_view(), name='login'),
